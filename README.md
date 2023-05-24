@@ -32,3 +32,16 @@ The service should assume there are a finite number of coins.
 • Allow for number of coins to be configurable and easily changed
 
 • Allow for the user to request for the most amount of coins to make change
+
+
+#### Solution:
+
+- Swagger-ui: http://localhost:8080/swagger-ui
+
+- spring-doc: http://localhost:8080/v3/api-docs
+
+- embedded DB:
+    - url: http://localhost:8080/h2-console
+    - db-uri: jdbc:h2:mem:currency
+    - username: sa
+    - password: password
