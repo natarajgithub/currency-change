@@ -2,6 +2,7 @@ package com.nataraj.currencyExchange.controller;
 
 import com.nataraj.currencyExchange.bean.BillChangeCoinResponseBean;
 import com.nataraj.currencyExchange.service.BillChangeService;
+import com.nataraj.currencyExchange.service.CoinService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,9 @@ class ExchangeControllerTest {
     @MockBean
     private BillChangeService billChangeService;
 
+    @MockBean
+    private CoinService coinService;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,7 +45,7 @@ class ExchangeControllerTest {
 
     @Test
     void testPing() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/ping"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/ping"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -58,7 +62,7 @@ class ExchangeControllerTest {
         // Configure mock service
         when(billChangeService.getCoinChangeForBill(1000, maximumCoins)).thenReturn(expectedResponse);
         // Perform the test
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/change")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/v1/change")
                         .param("bill", billAmount))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{\"coinValue\":1,\"coinCount\":5},{\"coinValue\":2,\"coinCount\":2}]"))
@@ -70,7 +74,7 @@ class ExchangeControllerTest {
         // Mocking data
         String billAmount = "2121";
         // Perform the test
-        mockMvc.perform(MockMvcRequestBuilders.get("/change")
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/change")
                         .param("bill", billAmount).param("maximumCoins", "false"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isBadRequest())
